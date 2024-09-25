@@ -9,11 +9,11 @@ folder=$1
 
 tail -n +2 $folder/fastq-run-info.tsv | cut -f1,135 | while IFS=$'\t' read -r run_accession sample_alias; do
 
-	old_fwd=${run_accession}_1.fastq.gz
-	old_rev=${run_accession}_2.fastq.gz
+	old_fwd=$folder/${run_accession}_1.fastq.gz
+	old_rev=$folder/${run_accession}_2.fastq.gz
 
-	new_fwd=${sample_alias}_1.fastq.gz
-	new_rev=${sample_alias}_2.fastq.gz
+	new_fwd=$folder/${sample_alias}_1.fastq.gz
+	new_rev=$folder/${sample_alias}_2.fastq.gz
 
 	mv $old_fwd $new_fwd ; mv $old_rev $new_rev
 
