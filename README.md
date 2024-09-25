@@ -7,6 +7,8 @@ While these scripts may be useful for other microbiome scientists, the repositor
 ## Small description for the scripts per folder
 * **fastq_prep**
 	* aggregate_lanes.sh: 
+
 	when same sample is sequenced in different lanes, we want to aggregate all those files into just one. This script does that. This appends lane after lane. If other more sophisticated approaches are required, then consider use other scripts.
 	* rename_teagasc_fastqfiles.sh: 
+
 	change the identifier of forward and reverse reads from `*_R{1,2}_001.fastq.gz` to more standard `_{1,2}.fastq.gz`
