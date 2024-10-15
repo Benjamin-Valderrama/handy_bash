@@ -3,9 +3,6 @@
 # path to folder with fastq files from different lanes
 folder=$1
 
-# Change to the specified directory
-#cd "$FOLDER" || exit
-
 # Create an associative array to store the grouped files
 declare -A file_groups
 
@@ -15,16 +12,20 @@ declare -A file_groups
 # 	*_{L001,L002,L003,L004} (in the line where the for loop starts)
 #	's_L[1234]_' (in the line where base_name is defined)
 
-for file in ${folder}/*_{L001,L002,L003,L004}_{1,2}.fastq.gz; do
+for file in ${folder}*_{L001,L002,L003,L004}_{1,2}.fastq.gz; do
 
-  # Extract the base name up to _L001 or _L002, and the suffix (_1.fastq.gz or _2.fastq.gz)
-  base_name=$(echo "$file" | sed -E 's/_L00[1234]_[12].fastq.gz//')
-  suffix=$(echo "$file" | grep -oE '_[12].fastq.gz')
+  # if some lanes were not used (e.g., L003 and/or L004), we skip them
+  if [ -e $file ]; then
 
-  # Create a key with base name and suffix
-  key="${base_name}${suffix}"
-  # Add the file to the group in the associative array
-  file_groups["$key"]+="$file "
+      # Extract the base name up to _L001, _L002 or any number, and the suffix (_1.fastq.gz or _2.fastq.gz)
+      base_name=$(echo "$file" | sed -E 's/_L00[1234]_[12].fastq.gz//')
+      suffix=$(echo "$file" | grep -oE '_[12].fastq.gz')
+
+      # Create a key with base name and suffix
+      key="${base_name}${suffix}"
+      # Add the file to the group in the associative array
+      file_groups["$key"]+="$file "
+  fi
 
 done
 
